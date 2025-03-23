@@ -1,8 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit'
-import movieoReducer from './movieoSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import movieReucer from '../store/movieoSlice';
+export const store=configureStore({ 
 
-export const store = configureStore({
-  reducer: {
-    movieoData : movieoReducer
-  },
-})
+    reducer:{
+               movieoData:movieReucer
+    
+    }
+});

@@ -1,75 +1,85 @@
-import React, { useEffect, useState } from 'react'
-import logo from '../assets/logo.png'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import userIcon from '../assets/user.png'
-import { IoSearchOutline } from "react-icons/io5";
-import { navigation } from '../contants/navigation';
-
-
-const Header = () => {
-    const location = useLocation()
-    const removeSpace = location?.search?.slice(3)?.split("%20")?.join(" ")
-    const [searchInput,setSearchInput] = useState(removeSpace)
-    const navigate = useNavigate()
-   
-    useEffect(()=>{
-        if(searchInput){
-            navigate(`/search?q=${searchInput}`)
+import React,{useEffect, useState} from "react";
+import logo from "../assets/logo.png";
+import user from "../assets/user.png";
+import { NavLink ,useNavigate,Link } from "react-router-dom";
+import {IoSearchOutline} from "react-icons/io5";
+const Header=()=>
+{
+    const [input,setInput]=useState("");
+    const Navigate=useNavigate("/");
+    const Navigation = [ 
+        {
+            label:"Tv Shows",
+            href: ''
+        },
+        {
+            label:"Movies",
+            href: 'movies'
         }
-    },[searchInput])
+    ]
 
-    const handleSubmit = (e)=>{
-        e.preventDefault()
+    const handleSubmit=(e)=>{
+        e.preventDefault();
+        Navigate(`/search?q=${input}`)
+        
     }
-
-  return (
-    <header className='fixed top-0 w-full h-16 bg-black bg-opacity-50 z-40'>
-            <div className='container mx-auto px-3 flex items-center h-full'>
-                <Link to={"/"}>
-                    <img
-                        src={logo}
-                        alt='logo'
-                        width={120} 
-                    />
+    return(
+      <header className="fixed top-0 w-full h-16 bg-neutral-600 bg-opacity-75">
+        <div className="container mx-auto px-3 flex items-center h-full">
+             <div>
+                <Link to="/">
+                <img 
+                src={logo}
+                alt="logo"
+                width={120}
+                />
                 </Link>
-
-                <nav className='hidden lg:flex items-center gap-1 ml-5'>
-                    {
-                        navigation.map((nav,index)=>{
-                            return(
-                                <div>
-                                    <NavLink key={nav.label+"header"+index} to={nav.href} className={({isActive})=>`px-2 hover:text-neutral-100 ${isActive && "text-neutral-100"}`}>
-                                        {nav.label}
-                                    </NavLink>
-                                </div>
-                            )
-                        })
-                    }
-                </nav>
-
-                <div className='ml-auto flex items-center gap-5'>
-                    <form className='flex items-center gap-2' onSubmit={handleSubmit}>
-                        <input
-                            type='text'
-                            placeholder='Search here...'
-                            className='bg-transparent px-4 py-1 outline-none border-none hidden lg:block'
-                            onChange={(e)=>setSearchInput(e.target.value)}
-                            value={searchInput}
-                        />
-                        <button className='text-2xl text-white'>
-                                <IoSearchOutline/>
-                        </button>
-                    </form>
-                    <div className='w-8 h-8 rounded-full overflow-hidden cursor-pointer active:scale-50 transition-all'>
-                        <img
-                            src={userIcon}
-                            width='w-ful h-full' 
-                        />
+        
+             </div>
+             <nav className="flex items-center space-x-4 ml-4 ">
+                {Navigation.map((item)=>{
+                return (
+                    <div>
+                        <NavLink key={item.label} to={item.href} className={"px-2 hover:text-white"} activeClassName="text-white">
+                            {item.label}
+                        </NavLink>
                     </div>
-                </div>
-            </div>
-    </header>
-  )
-}
+                )
+            })}
+              
+                    
+             </nav>
+             <div className="flex ml-auto gap-2 items-center">
+             <form onSubmit={handleSubmit} >
+                    <input 
+                    type="text"
+                    placeholder="Search..."
+                    className="w-100 h-10 px-2 bg-transparent outline-none overflow-hidden"
+                    onChange={(e)=>{
+                        setInput(e.target.value)
+                    }
 
-export default Header
+                    }
+                    value={input}
+
+                    />
+                    <button>
+                    <IoSearchOutline className="text-white " />
+                    </button>
+                </form>
+               
+    
+            <div className="w-10 h-10 rounded-full overflow-hidden cursor-pointer active:scale-50 transition-all">
+                
+                    <img 
+                    src={user}
+                    width="w-full h-full"
+                    />
+               </div>
+             </div>
+
+            </div>
+        </header>
+    )
+}
+export default Header;
